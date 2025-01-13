@@ -29,9 +29,12 @@ def get_chat_model_list():
 def init_model_and_tokenizer():
     global global_model, global_tokenizer
     global_model = Qwen2ForCausalLM.from_pretrained(
-        model_name, torch_dtype=torch.float16, device_map="auto"
+        model_name,
+        torch_dtype=torch.float16,
+        device_map="auto",
     )
     global_tokenizer = Qwen2Tokenizer.from_pretrained(model_name)
+    print("Chat Model and tokenizer initialized")
 
 
 def get_global_model_and_tokenizer():
@@ -45,13 +48,6 @@ def get_global_model_and_tokenizer():
 def as_auto_tokenizer(tokenizer: Qwen2Tokenizer) -> AutoTokenizer:
     any_tokenizer: Any = tokenizer
     return any_tokenizer
-
-
-prompt = "简单叙述大模型few shot能力"
-messages = [
-    {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": prompt},
-]
 
 
 class ChatMsg(BaseModel):
@@ -110,3 +106,16 @@ def handle_chat(req: ChatRequest) -> Iterator[str]:
         yield new_text
 
     thread.join()
+
+
+if __name__ == "__main__":
+    init_model_and_tokenizer()
+
+    response = handle_chat(
+        ChatRequest(
+            model=global_chat_model,
+            messages=[ChatMsg(role="user", content="中英文各一句话介绍LLM")],
+        )
+    )
+    for msg in response:
+        print(msg, end="")

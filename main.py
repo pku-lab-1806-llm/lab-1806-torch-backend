@@ -9,18 +9,23 @@ from utils.chat_backend import (
     handle_chat,
     init_model_and_tokenizer,
 )
-from utils.embedding_backend import EmbeddingRequest, handle_embedding
+from utils.embedding_backend import (
+    EmbeddingRequest,
+    get_embedding_model_list,
+    handle_embedding,
+    init_embedding_model,
+)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    _ = app
     init_model_and_tokenizer()
+    init_embedding_model()
     yield
 
 
 app = FastAPI(lifespan=lifespan)
-
-app = FastAPI()
 
 
 class ModelsResponse(BaseModel):
@@ -29,10 +34,10 @@ class ModelsResponse(BaseModel):
 
 @app.get("/api/model-list")
 def model_list():
-    return ModelsResponse(models=[*get_chat_model_list()])
+    return ModelsResponse(models=[*get_chat_model_list(), *get_embedding_model_list()])
 
 
-@app.get("/api/chat")
+@app.post("/api/chat")
 def chat(req: ChatRequest):
     response = handle_chat(req)
     return StreamingResponse(response)
@@ -42,7 +47,7 @@ class EmbeddingResponse(BaseModel):
     embeddings: list[list[float]]
 
 
-@app.get("/api/embed")
+@app.post("/api/embed")
 def embed(req: EmbeddingRequest):
     response = handle_embedding(req)
     return EmbeddingResponse(embeddings=response)
@@ -55,7 +60,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--port", type=int, default=8011)
 
     class Args(BaseModel):
         host: str
