@@ -1,9 +1,13 @@
 from typing import Union
 
+import torch
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
-default_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
+if torch.__version__.endswith("cu121"):
+    default_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
+else:
+    default_embedding_model_name = "../data/sentence-transformers/all-MiniLM-L6-v2"
 
 default_embedding_model: Union[SentenceTransformer, None] = None
 
