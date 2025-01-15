@@ -1,9 +1,11 @@
+from typing import Union
+
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
 default_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
 
-default_embedding_model: SentenceTransformer | None = None
+default_embedding_model: Union[SentenceTransformer, None] = None
 
 
 def init_embedding_model():

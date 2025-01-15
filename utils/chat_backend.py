@@ -1,6 +1,6 @@
 import os
 from threading import Thread
-from typing import Any, Iterator, Literal
+from typing import Any, Iterator, Literal, Union
 
 import torch
 from pydantic import BaseModel
@@ -18,8 +18,8 @@ else:
     model_name = os.environ.get("SCOW_AI_MODEL_PATH", "./models/Qwen2.5-7B-Instruct")
     global_chat_model = "Qwen2.5-7B-Instruct"
 
-global_model: Qwen2ForCausalLM | None = None
-global_tokenizer: Qwen2Tokenizer | None = None
+global_model: Union[Qwen2ForCausalLM, None] = None
+global_tokenizer: Union[Qwen2Tokenizer, None] = None
 
 
 def get_chat_model_list():
@@ -68,15 +68,15 @@ class ChatMsg(BaseModel):
 
 
 class ModelOptions(BaseModel):
-    max_tokens: int | None = None
-    temperature: float | None = None
+    max_tokens: Union[int, None] = None
+    temperature: Union[float, None] = None
 
 
 class ChatRequest(BaseModel):
     # empty string for default model
     model: str
     messages: list[ChatMsg]
-    options: ModelOptions | None = None
+    options: Union[ModelOptions, None] = None
 
 
 def handle_chat(req: ChatRequest) -> Iterator[str]:
