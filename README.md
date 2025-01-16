@@ -18,15 +18,15 @@ Run With Ascend:
 - Install torch, torch_npu, transformers by yourself or with existing images.
 - Install fastapi and uvicorn which may not be contained in general images.
 
-```bash
-pip install -r requirements.txt
-```
+  ```bash
+  pip install -r requirements.txt
+  ```
 
 - Put the weights and config files of `Qwen2.5-7B-Instruct` at `./models/Qwen2.5-7B-Instruct` or `$SCOW_AI_MODEL_PATH`.
 - Put the weights and config files of `sentence-transformers/all-MiniLM-L6-v2` in `../data/sentence-transformers/all-MiniLM-L6-v2`.
 - Start the server:
 
-```bash
-# > prod
-python main.py
-```
+  ```bash
+  # > prod
+  python main.py
+  ```
