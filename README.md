@@ -2,7 +2,7 @@
 
 A simple inference backend with PyTorch for `lab-1806-rag` repo.
 
-Compatible with both CUDA and CANN.
+Compatible with both CUDA and NPU.
 
 ## Usage
 
@@ -13,7 +13,7 @@ Develop With CUDA:
 uv run -- uvicorn main:app --port 8011 --reload
 ```
 
-Run With CANN:
+Run With NPU:
 
 - Install torch, torch_npu, transformers by yourself or with existing images.
 - Install fastapi and uvicorn which may not be contained in general images.
