@@ -6,8 +6,6 @@ Compatible with both CUDA and NPU.
 
 ## Usage
 
-Develop With CUDA:
-
 ```bash
 # > dev
 uv run -- uvicorn main:app --port 8011 --reload
