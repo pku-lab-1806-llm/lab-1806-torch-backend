@@ -8,7 +8,7 @@ default_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
 if torch.__version__.endswith("cu121"):
     default_embedding_model_path = default_embedding_model_name
 else:
-    default_embedding_model_path = f"../data/{default_embedding_model_name}"
+    default_embedding_model_path = f"./models/{default_embedding_model_name}"
 default_embedding_model: Union[SentenceTransformer, None] = None
 
 
