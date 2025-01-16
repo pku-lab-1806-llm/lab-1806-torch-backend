@@ -4,17 +4,18 @@ import torch
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
+default_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
 if torch.__version__.endswith("cu121"):
-    default_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
+    default_embedding_model_path = default_embedding_model_name
 else:
-    default_embedding_model_name = "../data/sentence-transformers/all-MiniLM-L6-v2"
-
+    default_embedding_model_path = f"../data/{default_embedding_model_name}"
 default_embedding_model: Union[SentenceTransformer, None] = None
 
 
 def init_embedding_model():
     global default_embedding_model
-    default_embedding_model = SentenceTransformer(default_embedding_model_name)
+
+    default_embedding_model = SentenceTransformer(default_embedding_model_path)
     print("Embedding model initialized")
 
 
