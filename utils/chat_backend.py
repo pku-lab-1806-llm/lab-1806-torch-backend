@@ -1,4 +1,3 @@
-import os
 from threading import Thread
 from typing import Any, Iterator, Literal, Union
 
@@ -15,7 +14,7 @@ if torch.__version__.endswith("cu121"):
 else:
     print("Using NPU")
     device = "npu"  # the device to load the model onto
-    model_name = os.environ.get("SCOW_AI_MODEL_PATH", "./models/Qwen2.5-7B-Instruct")
+    model_name = "./models/Qwen2.5-7B-Instruct"
     global_chat_model = "Qwen2.5-7B-Instruct"
 
 global_model: Union[Qwen2ForCausalLM, None] = None
