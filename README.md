@@ -1,6 +1,6 @@
 # lab-1806-torch-backend
 
-A simple wrapper for `torch`, `transformers` and `sentence-transformers` as a inference backend for `lab-1806-rag` repo.
+A simple inference backend with PyTorch for `lab-1806-rag` repo.
 
 Compatible with both CUDA and Ascend.
 
