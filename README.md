@@ -16,5 +16,5 @@ uv run main.py
 
 ## Together With NPU Server
 
-Put the weights and config files of `Qwen2.5-7B-Instruct` at `./models/Qwen2.5-7B-Instruct` or `$SCOW_AI_MODEL_PATH`.
-Put the weights and config files of `sentence-transformers/all-MiniLM-L6-v2` in `../data/sentence-transformers/all-MiniLM-L6-v2`.
+Put the weights and config files of `Qwen2.5-7B-Instruct` at `./models/Qwen2.5-7B-Instruct`.
+Put the weights and config files of `sentence-transformers/all-MiniLM-L6-v2` in `./models/sentence-transformers/all-MiniLM-L6-v2`.
