@@ -1,24 +1,24 @@
 from threading import Thread
-from typing import Any, Iterator, Literal, Union
+from typing import Iterator, Literal, Union
 
 import torch
 from pydantic import BaseModel
 from transformers import AutoTokenizer, TextIteratorStreamer
-from transformers.models.qwen2 import Qwen2ForCausalLM, Qwen2Tokenizer
+from transformers.models.qwen3 import Qwen3ForCausalLM
 
 if torch.__version__.endswith("cu121"):
     print("Using CUDA 12.1 (for mock)")
     device = "cuda:0"  # the device to load the model onto
-    model_name = "Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int4"
-    global_chat_model = "Qwen2.5-0.5B-Instruct"
+    model_name = "Qwen/Qwen3-4B-FP8"
+    global_chat_model = "Qwen/Qwen3-4B"
 else:
     print("Using NPU")
     device = "npu"  # the device to load the model onto
-    model_name = "./models/Qwen2.5-7B-Instruct"
-    global_chat_model = "Qwen2.5-7B-Instruct"
+    model_name = "./models/Qwen/Qwen3-4B"
 
-global_model: Union[Qwen2ForCausalLM, None] = None
-global_tokenizer: Union[Qwen2Tokenizer, None] = None
+global_chat_model = "Qwen/Qwen3-4B"
+global_model: Union[Qwen3ForCausalLM, None] = None
+global_tokenizer: Union[AutoTokenizer, None] = None
 
 
 def get_chat_model_list():
@@ -27,12 +27,12 @@ def get_chat_model_list():
 
 def init_model_and_tokenizer():
     global global_model, global_tokenizer
-    global_model = Qwen2ForCausalLM.from_pretrained(
+    global_model = Qwen3ForCausalLM.from_pretrained(
         model_name,
         torch_dtype=torch.float16,
         device_map="auto",
     )
-    global_tokenizer = Qwen2Tokenizer.from_pretrained(model_name)
+    global_tokenizer = AutoTokenizer.from_pretrained(model_name)
     print("Chat Model and tokenizer initialized")
 
 
@@ -42,11 +42,6 @@ def get_global_model_and_tokenizer():
     assert global_model is not None, "Model is not initialized"
     assert global_tokenizer is not None, "Tokenizer is not initialized"
     return global_model, global_tokenizer
-
-
-def as_auto_tokenizer(tokenizer: Qwen2Tokenizer) -> AutoTokenizer:
-    any_tokenizer: Any = tokenizer
-    return any_tokenizer
 
 
 class ChatMsg(BaseModel):
@@ -91,7 +86,7 @@ def handle_chat(req: ChatRequest) -> Iterator[str]:
 
     # 创建流式输出器
     streamer = TextIteratorStreamer(
-        as_auto_tokenizer(tokenizer),
+        tokenizer,
         skip_prompt=True,
         skip_special_tokens=True,
     )
