@@ -1,5 +1,6 @@
 import importlib
 import importlib.metadata
+import os
 from typing import Union
 
 from pydantic import BaseModel
@@ -9,14 +10,16 @@ default_embedding_model_name = "all-MiniLM-L6-v2"
 if importlib.metadata.version("torch").endswith("cu126"):
     default_embedding_model_path = "sentence-transformers/all-MiniLM-L6-v2"
 else:
-    default_embedding_model_path = "~/autodl-tmp/all-MiniLM-L6-v2"
+    default_embedding_model_path = os.path.expanduser("~/autodl-tmp/all-MiniLM-L6-v2")
 default_embedding_model: Union[SentenceTransformer, None] = None
 
 
 def init_embedding_model():
     global default_embedding_model
 
-    default_embedding_model = SentenceTransformer(default_embedding_model_path)
+    default_embedding_model = SentenceTransformer(
+        default_embedding_model_path, device="cpu"
+    )
     print("Embedding model initialized")
 
 
