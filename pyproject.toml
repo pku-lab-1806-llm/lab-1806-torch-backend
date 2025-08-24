@@ -3,24 +3,21 @@ name = "lab-1806-torch-backend"
 version = "0.1.0"
 description = "Use PyTorch as the backend for Lab 1806 RAG"
 readme = "README.md"
-requires-python = ">=3.9,<3.12"
+requires-python = "==3.12.*"
 
-# For CUDA 12.1
 dependencies = [
     "accelerate>=1.2.1",
-    "auto-gptq>=0.7.1",
     "fastapi>=0.115.6",
-    "numpy>=1.26.3,<2",
-    "optimum>=1.23.3",
     "pydantic>=2.10.5",
     "sentence-transformers>=3.3.1",
-    "torch==2.3.1+cu121",
+    "torch==2.7.1+cu126",
     "transformers>=4.52.4",
     "uvicorn>=0.34.0",
 ]
+
 [[tool.uv.index]]
 name = "pytorch"
-url = "https://download.pytorch.org/whl/cu121"
+url = "https://download.pytorch.org/whl/cu126"
 explicit = true
 
 [tool.uv.sources]

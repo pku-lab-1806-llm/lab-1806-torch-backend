@@ -3,12 +3,6 @@ from fastapi.concurrency import asynccontextmanager
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from utils.chat_backend import (
-    ChatRequest,
-    get_chat_model_list,
-    handle_chat,
-    init_model_and_tokenizer,
-)
 from utils.embedding_backend import (
     EmbeddingRequest,
     get_embedding_model_list,
@@ -20,7 +14,6 @@ from utils.embedding_backend import (
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _ = app
-    init_model_and_tokenizer()
     init_embedding_model()
     yield
 
@@ -34,13 +27,8 @@ class ModelsResponse(BaseModel):
 
 @app.get("/api/model-list")
 def model_list():
-    return ModelsResponse(models=[*get_chat_model_list(), *get_embedding_model_list()])
+    return ModelsResponse(models=[ *get_embedding_model_list()])
 
-
-@app.post("/api/chat")
-def chat(req: ChatRequest):
-    response = handle_chat(req)
-    return StreamingResponse(response)
 
 
 class EmbeddingResponse(BaseModel):
@@ -60,7 +48,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=8011)
+    parser.add_argument("--port", type=int, default=8092)
 
     class Args(BaseModel):
         host: str
