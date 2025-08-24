@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.concurrency import asynccontextmanager
-from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from utils.embedding_backend import (
@@ -27,8 +26,7 @@ class ModelsResponse(BaseModel):
 
 @app.get("/api/model-list")
 def model_list():
-    return ModelsResponse(models=[ *get_embedding_model_list()])
-
+    return ModelsResponse(models=[*get_embedding_model_list()])
 
 
 class EmbeddingResponse(BaseModel):

@@ -5,11 +5,11 @@ from typing import Union
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
-default_embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
+default_embedding_model_name = "all-MiniLM-L6-v2"
 if importlib.metadata.version("torch").endswith("cu126"):
-    default_embedding_model_path = default_embedding_model_name
+    default_embedding_model_path = "sentence-transformers/all-MiniLM-L6-v2"
 else:
-    default_embedding_model_path = f"./models/{default_embedding_model_name}"
+    default_embedding_model_path = "~/autodl-tmp/all-MiniLM-L6-v2"
 default_embedding_model: Union[SentenceTransformer, None] = None
 
 
